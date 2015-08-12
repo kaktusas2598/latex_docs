@@ -1,0 +1,362 @@
+\documentclass[8pt]{extarticle}
+
+\pagestyle{empty} %No footer or header
+
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{vmargin}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\columnsep}{0.5cm}
+\setlength{\columnseprule}{2pt}
+\def\columnseprulecolor{\color{black}}
+
+
+\setlength{\parindent}{0pt}
+
+\setmarginsrb%
+{1.5cm}  % left
+{0.5cm}  % top
+{1.5cm}  % right
+{1.0cm}  % bottom
+{0ex}    % header height
+{0ex}    % header separation
+{0ex}    % footer height
+{0ex}    % footser separation
+
+\begin{document}
+
+\title{Linux Command Line Notes}
+\author{Nerijus Vilčinskas}
+\date{2015-08-07}
+\maketitle
+
+\begin{multicols}{2}
+
+%\begin{mdframed}
+\section{INTRODUCTION}
+
+\begin{tabular}{ll}
+	\texttt{cal} & calendar \\
+	\texttt{df} & free space on disk drives \\
+	\texttt{free} & amount of free memory \\
+	\texttt{exit} & exit terminal \\
+\end{tabular}
+
+\texttt{Ctrl+Alt+(F1-F6)} - access virtual terminals
+
+\texttt{Alt+(F1-F6)} - switch virtual terminals
+
+\texttt{Alt+F7} - come back to GUI
+%\end{mdframed}
+
+%\begin{mdframed}
+\section{NAVIGATION}
+
+\begin{tabular}{ll}
+\texttt{pwd} & display current working directory\\
+\texttt{ls} & list directory contents\\
+\texttt{cd} \textit{dir} & change to directory \textit{dir} \\
+\texttt{cd -} & change to previous working directory\\
+\texttt{cd} & change to home dir
+\end{tabular}
+
+%\end{mdframed}
+
+%\begin{mdframed}
+\section{EXPLORATION}
+
+\begin{tabular}{ll}
+\texttt{ls} & list directory contents\\ 
+& \texttt{-a} - all files\\
+& \texttt{-d} - view directory\\
+& \texttt{-F} - append file type indicator\\
+& \texttt{-h} - in long format display file sizes nicely\\
+& \texttt{-l} - long format\\
+& \texttt{-r} - reversed order(normaly asc alphanumeric order)\\
+& \texttt{-S} - sort by file size\\
+& \texttt{-t} - sort by modification time\\		
+\texttt{file} & view file type \\
+\texttt{less} & view file contents
+\end{tabular}
+%\end{mdframed}
+
+\begin{tabular}{ll}
+Keybinding & \texttt{less} Commands \\ \hline
+PAGE UP or b & next page \\
+PAGE DOWN or Spacebar & previous page \\
+Up Arrow or k & scroll line up \\
+Down Arrow or j & scroll line down \\
+G & move to EOF \\
+1G or g & move to begginning of file \\
+/characters & search \\
+n & search of next occurance in search \\
+h & help screen \\
+q & quit less \\
+\end{tabular}
+
+\subsection{Linux File Structure}
+\textbf{/} - root dir, start of filesystem;
+\textbf{/bin} - system binaries; \\
+\textbf{/boot} - contains linux kernel, initial RAM disk image, bootloader;\\
+\textbf{/dev} - device nodes;\\
+\textbf{/etc} - system-wide configs and services start up scripts;\\
+\textbf{/home} - writable directory for each ordinary user;\\
+\textbf{/lib} - shared libraries used by core system;\\
+\textbf{/lost+found} - used in case of filesystem corrupt for partial recovery;\\
+\textbf{/media} - mount points for removable media mounted automatically (on modern Linux);\\
+\textbf{/mnt} - mount points for removable devices mounted manually(older Linux);\\
+\textbf{/opt} - for "optional" soft(mostly commercial);\\
+\textbf{/proc} - virtual filesystem maintained by kernel, "files" are peppholes into kernel;\\
+\textbf{/root} - root account home dir;\\
+\textbf{/sbin} "system" binaries, preforming vital system tasks;\\
+\textbf{/tmp} - temp files created by various programs;\\
+\textbf{/usr} - likely largest dir, contains programs and support files used by regular users;\\
+\textbf{/usr/bin} - binaries installed by distro;\\
+\textbf{/usr/lib} -shared libraries used by programs in /usr/bin;\\
+\textbf{/usr/local} - programs not included by distro, but used system wide;\\
+\textbf{/usr/sbin} - more sysstem administration programs;\\
+\textbf{/usr/share} - shared data betwen /usr/bin(default configs,icons,sound..);\\
+\textbf{/usr/share/doc} - documentation files from packages;\\
+\textbf{/var} - ever changing dir, includes databases, spoof files,mail;\\
+\textbf{/var/log} - log file,s recordsof various system activities;\\
+
+\section{MANIPULATING FILES AND DIRECTORIES}
+
+\begin{tabular}{ll}
+\texttt{cp} & copy files and directories\\
+& \texttt{-a} - copy with attributes, including permissions \\
+& and ownership\\
+& \texttt{-i} - asks user for confirmation before overwriting file\\
+& \texttt{-r} - copy directories and it's contents, used for dir copying\\
+& \texttt{-u} - copy either non existant or newer versions file\\ 
+& to destination dir\\
+& \texttt{-v} - display informative messages while copying\\
+\texttt{mv} & move/rename files and dirs\\
+& \texttt{-i} - asks user for confirmation before overwriting file\\
+& \texttt{-u} - move either non existant or newer versions file\\
+& to destination dir\\
+& \texttt{-v} - display informative messages while moving\\
+\texttt{mkdir} & create dirs\\
+\texttt{rm} & remove files and dirs\\
+& \texttt{-i} -asks for confirmation before deleting existing file\\
+& \texttt{-r} - recursively delete directories\\
+& \texttt{-f} - ignore nonexistant files and\\
+& do not prompt, overrides -i\\
+& \texttt{-v} - display infromative messages\\
+\texttt{ln} \textit{file link} & create hard link of \textit{file}\\
+\texttt{ln -s} \textit{file link} & create symbolic link of \textit{file}\\
+\end{tabular}
+
+\subsection{Wilcards(Globbing)}
+\begin{tabular}{ll}
+* & Any character\\
+? & Any single character\\
+{[characters]} & Any character in set of characters\\
+{[!characters]} & Any character not in set of characeters\\
+{[[:class:]]} & Any character that belongs to specified class\\
+\end{tabular}
+
+\subsection{Character classes}
+\begin{tabular}{ll}
+{[:alnum:]}& Any alphanumeric character\\
+{[:alpha:]} & Any alphabetic character\\
+{[:digit:]} & Any numeral\\
+{[:lower:]} & Any lowercase character\\
+{[:upper:]} & Any uppercase character\\
+\end{tabular}
+
+\textbf{Wildcards} work in some GUI file managers too!
+
+\subsection{Hard links}
+\begin{itemize}
+	\item Every file has a single has link to give file it's name
+	\item Hard link cannot reference file outside its own filesystem
+	\item Hard link cannot reference directory
+\end{itemize}
+
+\texttt{ls -i} to view files with their inode number for recognising same files created with hard links
+
+\subsection{Symbolic links}
+\begin{itemize}
+	\item Overcome hard links limitations
+	\item Then link deleted, file is not deleted, if vice versa - link is broken
+	\item File and it's link are indistinguishable
+\end{itemize}
+
+\section{WORKING WITH COMMANDS}
+
+\begin{tabular}{ll}
+	\texttt{type} & show command name is interpreted\\
+	\texttt{which} & show which executable is going to be launched\\
+	\texttt{man} & show command manual page\\
+	\texttt{apropos(man -k)} & display list of appropriate commands\\
+	\texttt{man } \textit{section} & display man entry for section \textit{section}\\
+	\texttt{info} & display command's info entry\\
+	\texttt{whatis} & very brief description of command\\
+	\texttt{alias} & create command alias\\
+	\texttt{unalias} & unbind alias\\
+	\texttt{help} & help for shell builtins
+\end{tabular}
+
+\subsection{Command types}
+\begin{itemize}
+	\item Executables - either compiled or scripted
+	\item Shell builtin commands
+	\item Shell Functions
+	\item Aliases
+\end{itemize}
+
+\texttt{--help} - many executables have this option to display command syntax and options.
+
+\texttt{man} uses \texttt{less} pager most of the times, so \texttt{less} shortcuts will work here!
+
+\subsection{man sections}
+\begin{tabular}{ll}
+1 &  User commands\\
+2 & Programming interfaces for kernel system calls\\
+3 & Programming interfaces to the C library\\
+4 & Special files such as devices nodes and drivers\\
+5 & File formats\\
+6 & Games and amusements such as screensavers\\
+7 & Miscellaneous\\
+8 & System administration commands
+\end{tabular}
+
+\subsection{info commands}
+\begin{tabular}{ll}
+? &	Display command help\\
+PAGE UP or BACKSPACE & Display previous page\\
+PAGE DOWN or Spacebar & Display next page\\
+n &	Display next node\\
+p &	Display previous node\\
+u &	Up - Display parent node of \\ &currently displayed note(menu)\\
+ENTER &	Follow hyperlink at cursor pos\\
+q &	Quit.
+\end{tabular}
+
+Most other documentation is in \textbf{/usr/share/doc!!!}
+
+\texttt{alias} \textit{name = 'string'}
+
+Seperate shell comands with \textbf{;}
+
+\section{REDIRECTION}
+
+\begin{tabular}{ll}
+\texttt{cat} & concatenate files,display, join files, read from stdin\\
+\texttt{sort} & sort lines of text\\
+\texttt{uniq} & report or omit repeated lines from sorted stdin\\
+& \texttt{-d} show repated lines(default action is ommit them)\\
+\texttt{wc} & print newline, word and byte counts for each file\\
+& \texttt{-l} - show only newline count\\
+\texttt{grep} & print lines matching pattern\\
+& \texttt{-i} -ignore case\\
+& \texttt{-v} - print lines that do not match pattern\\
+\texttt{head} & output first part of file\\
+& \texttt{-n} \textit{number} - specify how many lines to print(default-10)\\
+\texttt{tail} & output last part of file\\
+& \texttt{-n} \textit{number} - specify how many lines to print(default-10)\\
+& \texttt{-f} - real time file end view\\
+\texttt{tee} & read from standard input \& write to standard output and files
+\end{tabular}
+
+> - redirect stdout with truncating
+>> - redirect stdout with appending
+2> - redirect to stderr(2 is file descriptor, but it wont be always 2)
+%&> - redirect both stdout and stderr, alternate old school way: command > out_file 2>&1
+
+File descriptors:
+1 - stdin
+2 - stdout
+3 - stder
+/dev/null - bit bucket, accepts input and does nothing, used to dispose of unwanted ouputs
+
+cat movie.mpeg.0* > movie.mpeg - cat is good for joining files
+| (pipeline) - used for redirecting one command stdout to stdin of another command, ex.: ls /usr/bin | less
+ls /usr/bin | tee ls.txt | grep nu - tee outtputs ls to file and sends ls for patter natching.
+
+\section{SEEING WORLD AS SHELL(EXPANSION, QUOTING, ESCAPING)}
+
+echo - display line of text
+Expansions:
+
+Pathname
+
+%ls *, echo *S, echo \left[ :upper:]]* - shell expands wildcards
+
+%echo .[!.]?* - hidden files pathname expansion
+
+Tilde
+
+\textasciitilde expands into home dir, \textasciitilde some\_other\_guy for other users home dirs.
+
+Arithmetic
+
++,-,/,*,%,** - supports only integer division
+
+%echo \$\left( \$\left( 5**2)) * 3)) - 5^2*3
+
+%echo \$\left( (5**2) * 3)) – same, single parentheses for grouping
+
+%echo \$\left( 5/2)) – 2
+
+Brace
+
+echo 1{A,B,C}9 – 1A9 2A9 3A9
+
+echo No{1..5} – No1 No2 No3 No4 No5(May also be used with chars and reverse order
+
+echo 1{A{1,2},B{3,4}}2 – 1A12 1A22 1B33 1B42 – nesting
+
+good for making lists of files or directories!
+
+Parameter
+
+echo \$USER – expands into user variable(parameter)
+
+useful in shell scripts
+
+Command Substitution:
+
+echo \$(ls) – expands command output
+
+file \$(ls /usr/bin/* | grep zip) – entire pipeline
+
+%ls -l \wedgehich cp` - alternate old school syntax
+
+
+
+Quoting
+
+
+
+%Double quotes – special chars use meanings(exceptions are \$,\backslash,\supset. So paramether, arithmetic expansions and command substition are still allowed.
+
+%Examples: cat “Bad filename”; echo “Space works!”; echo “$(cal)” - nice calendar(show newlines)
+
+Single quotes – supresses ALL expansions.
+
+%Escaping characters – use “\” to quote single characters. \$, \.. And also lets to put special character into file name – touch \&stupid
+
+%Escape sequences - \a, \b, \n, \r, \t (use echo -e to enable interpretation)
+
+
+
+\section{KEYBOARD TRICKS}
+
+
+
+clear – clear screen
+
+history – display history list
+
+Command line editing is implemented for bash by Readline.
+
+%Cursor Movement Commands\right)<++>\right)<++>\right)<++> \right)<++>\right]<++>}<++>
+
+\end{multicols}
+\end{document}
