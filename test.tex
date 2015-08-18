@@ -6,7 +6,7 @@
 \usepackage{multicol}
 \usepackage{color}
 \usepackage{vmargin}
-
+\usepackage{graphicx}
 % Don't print section numbers
 \setcounter{secnumdepth}{0}
 
@@ -98,6 +98,8 @@ h & help screen \\
 q & quit less \\
 \end{tabular}
 
+%Maybe includegraphics here?
+%Need to find better graphics
 \subsection{Linux File Structure}
 \textbf{/} - root dir, start of filesystem;
 \textbf{/bin} - system binaries; \\
@@ -139,9 +141,7 @@ q & quit less \\
 & \texttt{-i} - asks user for confirmation before overwriting file\\
 & \texttt{-u} - move either non existant or newer versions file\\
 & to destination dir\\
-& \texttt{-v} - display informative messages while moving\\
-\texttt{mkdir} & create dirs\\
-\texttt{rm} & remove files and dirs\\
+& \texttt{-v} - display informative messages while moving\\ \texttt{mkdir} & create dirs\\ \texttt{rm} & remove files and dirs\\
 & \texttt{-i} -asks for confirmation before deleting existing file\\
 & \texttt{-r} - recursively delete directories\\
 & \texttt{-f} - ignore nonexistant files and\\
@@ -178,7 +178,7 @@ q & quit less \\
 	\item Hard link cannot reference directory
 \end{itemize}
 
-\texttt{ls -i} to view files with their inode number for recognising same files created with hard links
+\texttt{ls -i} to view files with their inode number for recognising same files created with hard links.
 
 \subsection{Symbolic links}
 \begin{itemize}
@@ -261,102 +261,222 @@ Seperate shell comands with \textbf{;}
 \texttt{tail} & output last part of file\\
 & \texttt{-n} \textit{number} - specify how many lines to print(default-10)\\
 & \texttt{-f} - real time file end view\\
-\texttt{tee} & read from standard input \& write to standard output and files
+\texttt{tee} & read from standard input \& write to standard output \\
+& and files
 \end{tabular}
 
-> - redirect stdout with truncating
->> - redirect stdout with appending
-2> - redirect to stderr(2 is file descriptor, but it wont be always 2)
-%&> - redirect both stdout and stderr, alternate old school way: command > out_file 2>&1
+\begin{tabular}{ll}
+	\texttt{>} & redirect stdout with truncating\\
+	\texttt{>>} & redirect stdout with appending\\
+	\texttt{2>} & redirect to stderr(2 is file descriptor, but it wont be always 2)\\
+	\texttt{\&>} & redirect both stdout and stderr\\
+	%\textgreater - >
+	& alternate old school way: command \textgreater out\_file 3\textgreater\&1
+\end{tabular}
 
-File descriptors:
-1 - stdin
-2 - stdout
-3 - stder
-/dev/null - bit bucket, accepts input and does nothing, used to dispose of unwanted ouputs
+\subsubsection{File descriptors}
+\begin{tabular}{ll}
+	\texttt{1} & stdin\\
+	\texttt{2} & stdout\\
+	\texttt{3} & stder\\
+\end{tabular}
 
-cat movie.mpeg.0* > movie.mpeg - cat is good for joining files
-| (pipeline) - used for redirecting one command stdout to stdin of another command, ex.: ls /usr/bin | less
-ls /usr/bin | tee ls.txt | grep nu - tee outtputs ls to file and sends ls for patter natching.
+\texttt{cat} \textit{movie.mpeg.0}* \textgreater  \textit{movie.mpeg} - \texttt{cat} is good for joining files!
+
+$|$ (pipeline) - used for redirecting one command stdout to stdin of another command, ex.: \texttt{ls /usr/bin | less}
+
+\texttt{ls /usr/bin | tee ls.txt | grep nu} - \texttt{tee} outputs \texttt{ls} to file and sends \texttt{ls} for pattern matching.
 
 \section{SEEING WORLD AS SHELL(EXPANSION, QUOTING, ESCAPING)}
 
-echo - display line of text
-Expansions:
+\begin{tabular}{ll}
+	\texttt{echo} - display line of text
+\end{tabular}
 
-Pathname
+\subsection{Expansions}
 
-%ls *, echo *S, echo \left[ :upper:]]* - shell expands wildcards
+\subsubsection{Pathname}
 
-%echo .[!.]?* - hidden files pathname expansion
+\texttt{ls *}, \texttt{echo *S}, \texttt{echo [[ :upper:]]*} - shell expands wildcards.
 
-Tilde
+\texttt{echo .[!.]?*} - hidden files pathname expansion.
 
-\textasciitilde expands into home dir, \textasciitilde some\_other\_guy for other users home dirs.
+\subsubsection{Tilde}
 
-Arithmetic
+\textasciitilde expands into home dir, \texttt{\textasciitilde username} for other users home dirs.
 
-+,-,/,*,%,** - supports only integer division
+\subsubsection{Arithmetic}
 
-%echo \$\left( \$\left( 5**2)) * 3)) - 5^2*3
+\texttt{+,-,/,*,\%,**} - supports only integer division.
 
-%echo \$\left( (5**2) * 3)) – same, single parentheses for grouping
+\texttt{echo \$(( \$(( 5**2)) * 3))} - $5^{2}*3$
 
-%echo \$\left( 5/2)) – 2
+\texttt{echo \$(((5**2) * 3))} – same, single parentheses for grouping.
 
-Brace
+\texttt{echo \$(( 5/2))} – $2$
 
-echo 1{A,B,C}9 – 1A9 2A9 3A9
+\subsubsection{Brace}
 
-echo No{1..5} – No1 No2 No3 No4 No5(May also be used with chars and reverse order
+\texttt{echo 1\{A,B,C\}9} – 1A9 2A9 3A9.
 
-echo 1{A{1,2},B{3,4}}2 – 1A12 1A22 1B33 1B42 – nesting
+\texttt{echo No\{1..5\}} – No1 No2 No3 No4 No5(May also be used with chars and reverse order).
 
-good for making lists of files or directories!
+\texttt{echo 1\{A\{1,2\},B\{3,4\}\}2} – 1A12 1A22 1B33 1B42 – nesting.
 
-Parameter
+Good for making lists of files or directories!
 
-echo \$USER – expands into user variable(parameter)
+\subsubsection{Parameter}
 
-useful in shell scripts
+\texttt{echo \$USER} – expands into user variable(parameter).
 
-Command Substitution:
+Useful in shell scripts!
 
-echo \$(ls) – expands command output
+\subsection{Command Substitution}
 
-file \$(ls /usr/bin/* | grep zip) – entire pipeline
+\texttt{echo \$(ls)} – expands command output.
 
-%ls -l \wedgehich cp` - alternate old school syntax
+\texttt{file \$(ls /usr/bin/* | grep zip)} – entire pipeline.
 
+\texttt{ls -l `  which cp\`} - alternate old school syntax.
 
+\subsection{Quoting}
 
-Quoting
+\textbf{Double quotes} – 
+%Missing $ inserted ERROR
+%special chars lose meaning(exceptions are \texttt{\$} ,\backslash, `). So paramether, arithmetic expansions and command substition are still allowed.
 
+Examples: \texttt{cat “Bad filename”} ; \texttt{echo “Space works!”} ; \texttt{echo “\$(cal)”} - nice calendar(show newlines).
 
+\textbf{Single quotes} – supresses ALL expansions.
 
-%Double quotes – special chars use meanings(exceptions are \$,\backslash,\supset. So paramether, arithmetic expansions and command substition are still allowed.
+%Escaping characters – use “\backslash” to quote single characters. \$, \backslash.. And also lets to put special character into file name – \texttt{touch \&stupid}
 
-%Examples: cat “Bad filename”; echo “Space works!”; echo “$(cal)” - nice calendar(show newlines)
-
-Single quotes – supresses ALL expansions.
-
-%Escaping characters – use “\” to quote single characters. \$, \.. And also lets to put special character into file name – touch \&stupid
-
-%Escape sequences - \a, \b, \n, \r, \t (use echo -e to enable interpretation)
-
-
+%Escape sequences - \backslash a, \backslash b, \backslash n, \backslash r, \backslash t (use echo -e to enable interpretation).
 
 \section{KEYBOARD TRICKS}
 
+\begin{tabular}{ll}
+	\texttt{clear} & clear screen\\
+	\texttt{history} & display history list\\
+\end{tabular}
 
+Command line editing is implemented for bash by \textbf{Readline}.
 
-clear – clear screen
+\subsection{Cursor Movement Commands}
+\begin{tabular}{ll}
+	CTRL + A & Cursor at the beginning of line\\
+	CTRL + E & Cursor at the end of line\\
+	ALT + F & Move cursor forward one word\\
+	ALT + B & Move cursor backward one word\\
+	CTRL + L & Clear the screen
+\end{tabular}
 
-history – display history list
+\subsection{Text Editing Commands}
+\begin{tabular}{ll}
+	CTRL + D & Delete character at cursor position\\
+	CTRL + T & Transpose character at cursor with one preceeding it\\
+	ALT + T & Transpose word at cursor with one preceeding it\\
+	ALT + L & Convert characters from cursor to the end of line to lowecase\\
+	ALT + U & Convert character from cursor to the end of line to uppercase
+\end{tabular}
 
-Command line editing is implemented for bash by Readline.
+\subsection{Cut and Paste Commands}
+\begin{tabular}{ll}
+	CTRL + K & Kill text from cursor to the end of line\\
+	CTRL + U & Kill text from cursor to the beginning of line\\
+	ALT + D & Kill text from cursor to the end of word\\
+	ALT + BACKSPACE & Kill Text from cursor to beginning of line. If cursor at begin, kill previous word\\
+	CTRL + Y & Yank text from kill-ring and insert at cursor position
+\end{tabular}
 
-%Cursor Movement Commands\right)<++>\right)<++>\right)<++> \right)<++>\right]<++>}<++>
+\textbf{meta} key is usually \textbf{ALT}!
+
+\textbf{Completion} - is mechanism that on pressing \textbf{TAB} completes commands, file names, hosts, usernames, variables.
+
+\begin{tabular}{ll}
+	ALT + ? & display list of possible completions, same as pressing TAB second time.\\
+	ALT + * & insert all possible completions.
+\end{tabular}
+
+It is also possible to program completions. see \texttt{set | less}
+
+For more Info on Command Line Editing and Completion read \texttt{man bash} \textbf{READLINE} section!
+
+\subsection{Using History}
+
+History is saved in \textbf{.bash\_history} file in home dir.
+
+\begin{tabular}{ll}
+	\texttt{!88} & performs history expansion(executes 88 item in history list)
+\end{tabular}
+
+\subsection{History Commands}
+\begin{tabular}{ll}
+	CTRL + P & Move to previous history entry\\
+	CTRL + N & Move to next history entry\\
+	ALT + \textless & Move to beginning of history list\\
+	ALT + \textgreater & Move to end of history list\\
+	CTRL + R & Reverse incremental search\\
+	ALT + P & Reverse search, non-incremental. Hit Enter \\
+	& before actually performing search\\
+	ALT + N & Forward search, non-incremental\\
+	CTRL + O & Execute current history entry and move to text\\
+	CTRL + J & Copy current history entry to terminal
+\end{tabular}
+
+\subsection{History Expansion Commands}
+\begin{tabular}{ll}
+	\textit{!!} & Repeat last command\\
+	\textit{!number} & Repeat history entry item \textit{number}\\
+	\textit{!string} & Repeat last history entry starting with \textit{string}\\
+	\textit{!?string} & Repeat last history entry containing \textit{string}
+\end{tabular}
+
+\begin{tabular}{ll}
+	\texttt{script} \textit{[file]} & record entire shell session into file 
+\end{tabular}
+
+\section{PERMISSIONS}
+
+\begin{tabular}{ll}
+	\texttt{id} & display user's identity\\
+	\texttt{chmod} & change file's mode\\
+	\texttt{umask} & set default file permissions\\
+	\texttt{su} & run shell as another user\\
+	& \texttt{-} or \texttt{-l} for login shell(user's environment\\
+	& is loaded and set to user's home dir)\\
+	& may specify user(defaults to superuser)\\
+	\texttt{sudo} & execute command as another user\\
+	\texttt{chown} \textit{[owner][:[group]] file\ldots} & change file's owner\\
+	\texttt{chown} \textit{user:} & changes owner to user and group \\
+	& to user's login group\\
+	\texttt{chown} \textit{:users} & same owner, group to users\\
+	\texttt{chgrp} & change file's group ownership\\
+	\texttt{passwd} & change user's password
+\end{tabular}
+
+\subsection{File attributes}
+
+\texttt{-rwxrw-r-- }
+\texttt{0\ldots\ldots\ldots9}
+\begin{tabular}{ll}
+	\texttt{0} & file type\\
+	\texttt{1-3} & owner permissions\\
+	\texttt{4-6} & group permissions\\
+	\texttt{7-9} & world permissions
+\end{tabular}
+
+\subsection{File types}
+
+\begin{tabular}{ll}
+	\texttt{-} & regular file\\
+	\texttt{d} & directory\\
+	\texttt{l} & symbolic link(holds dummy attributes)\\
+	\texttt{c} & character special file(device that handles data as streams of bytes, such as terminal or modem)\\
+	\texttt{b} & block special file(device that handles data in blocks, such as CDROM or hard drive)
+\end{tabular}
+
+\subsection{File permissions}
 
 \end{multicols}
 \end{document}
